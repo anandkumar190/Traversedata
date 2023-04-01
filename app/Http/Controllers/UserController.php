@@ -79,10 +79,7 @@ class UserController extends Controller
 }
 
 
-public function exportDataToExcel()
-{
-    return Excel::download(new MyExport, 'my_excel_file.xlsx');
-}
+
 
 
 
