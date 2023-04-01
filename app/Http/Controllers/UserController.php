@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\FullName;
 use Illuminate\Support\Facades\Cookie;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MyExport;
 
 class UserController extends Controller
 {
@@ -53,27 +55,33 @@ class UserController extends Controller
 
    public function getjsonfile()
    {
-    $temp=[];
     $data = @json_decode(file_get_contents("https://opencontext.org/query/Asia/Turkey/Kenan+Tepe.json"),true);  
- 
-    $result=$this->findValuesByKey($data,"id");
-    print_r($result);
-
-
-
+    $key="id";
+    $result=$this->findValuesByKey($data,$key);
+    $result=array_unique($result);
+    return view('exportsheet',['data' => $result]);
    }
 
   public function findValuesByKey($obj, $key) {
     $values = array();
     foreach ($obj as $property => $value) {
-        if ($property == $key) {
-            $values[] = $value;
+        if ($property === $key ){
+            $value=is_array($value)?@$value['id']:$value;
+            if (!empty($value) and is_string($value)) {
+                $values[] = is_array($value)?@$value['id']:$value;
+            }  
         }
         if (is_object($value) || is_array($value)) {
             $values = array_merge($values, $this->findValuesByKey($value, $key));
         }
     }
     return $values;
+}
+
+
+public function exportDataToExcel()
+{
+    return Excel::download(new MyExport, 'my_excel_file.xlsx');
 }
 
 

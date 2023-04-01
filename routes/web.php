@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/ee', function () {
+    return view('exportsheet');
+});
+
 
 Route::post('/saveName','UserController@saveName');
 Route::get('/findIpAddres','UserController@findIpAddres');

@@ -97,6 +97,8 @@
             <br>
            <p> find Ip Addres:
             <a href="{{ url('/findIpAddres') }}">findIpAddres</a></p>
+            <p>  Traverse all the records in this to find all “ids:
+            <a href="{{ url('/export') }}">export</a></p>
             </div>
         </div>
     </body>
